@@ -1,0 +1,32 @@
+stages:
+  - kill_if_exists
+  - rm_if_exists
+  - rmi_if_exists
+  - build
+  - deploy
+
+rmi_if_exists:
+  allow_failure: true
+  stage: rmi_if_exists
+  script:
+    - docker rmi $CI_PROJECT_NAME:gitlabci
+
+build:
+  stage: build
+  script:
+    - docker build --network=host -t $CI_PROJECT_NAME:gitlabci .
+
+kill_if_exists:
+  allow_failure: true
+  stage: kill_if_exists
+  script:
+    - docker kill $CI_PROJECT_NAME
+rm_if_exists:
+  allow_failure: true
+  stage: rm_if_exists
+  script:
+    - docker rm  $CI_PROJECT_NAME
+deploy:
+  stage: deploy
+  script:
+    - docker run -d --net=host --restart=unless-stopped  -v /var/$CI_PROJECT_NAME/:/usr/share/ --name=$CI_PROJECT_NAME $CI_PROJECT_NAME:gitlabci
