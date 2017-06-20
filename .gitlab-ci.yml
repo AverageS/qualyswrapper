@@ -29,4 +29,4 @@ rm_if_exists:
 deploy:
   stage: deploy
   script:
-    - docker run -d --net=host --restart=unless-stopped  -v /var/$CI_PROJECT_NAME/:/usr/share/ --name=$CI_PROJECT_NAME $CI_PROJECT_NAME:gitlabci
+    - docker run -d --net=host --restart=unless-stopped  -v /var/$CI_PROJECT_NAME/:/usr/share/ --name=$CI_PROJECT_NAME $CI_PROJECT_NAME:gitlabci python3 scanner.py --hostfile=$HOSTFILE

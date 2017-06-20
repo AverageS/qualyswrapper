@@ -2,6 +2,7 @@ import subprocess
 import logging
 import json
 import time
+import sys, getopt
 from elasticsearch import Elasticsearch
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -9,6 +10,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 es = Elasticsearch([{'host': '192.168.227.164', 'port': 9200}])
+
+opts, args = getopt.getopt(sys.argv[1:],"",["hostfile="])
+opts_dict = dict(opts)
+HOSTFILE = opts_dict['--hostfile']
 
 
 def scan(hostfile):
@@ -51,7 +56,7 @@ def parse_and_send(results):
 if __name__ == '__main__':
     while True:
         logger.info('started scan')
-        results = scan('all_domains')
+        results = scan(HOSTFILE)
         parse_and_send(results)
 
 
