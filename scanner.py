@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+es = Elasticsearch([{'host': '192.168.227.164', 'port': 9200}])
 
 
 def scan(hostfile):
@@ -29,15 +29,11 @@ def parse_and_send(results):
         try:
             for key in result['endpoints'][0]:
                 result[key] = result['endpoints'][0][key]
-                result.pop('endpoints')
-                for index, el in enumerate(result['details']['chain']['certs']):
-                    result['details']['chain']['certs' + str(index)] = el
-                    result['details']['chain'].pop('certs')
-                for index, el in enumerate(result['details']['suites']['list']):
-                    result['details']['suites']['list' + str(index)] = el
-                    result['details']['suites'].pop('list')
-                    result['certNotAfter'] = result['details']['cert']['notAfter']
-                    result['certNotBefore'] = result['details']['cert']['notBefore']
+                #result.pop('endpoints')
+            details = result['endpoints'][0]['details']
+            result['certNotAfter'] = details['cert']['notAfter']
+            result['certNotBefore'] = details['cert']['notBefore']
+            result['endpointsLength'] = len(result['endpoints'])
         except:
             logger.error('some keys havent been found [%s]' % str(result['host']))
         current_time = int(round(time.time() * 1000))
@@ -55,7 +51,7 @@ def parse_and_send(results):
 if __name__ == '__main__':
     while True:
         logger.info('started scan')
-        results = scan('/usr/share/all_domains')
+        results = scan('all_domains')
         parse_and_send(results)
 
 
