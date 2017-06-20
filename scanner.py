@@ -12,7 +12,7 @@ es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 
 def scan(hostfile):
-    args = ' '.join(["/opt/ssllabs-scan/ssllabs-scan --ignore-mismatch=true --hostfile=%s " % hostfile])
+    args = ' '.join(["./ssllabs-scan --ignore-mismatch=true --hostfile=%s " % hostfile])
     ans = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE)
     ans.poll()
     data = ans.communicate()
