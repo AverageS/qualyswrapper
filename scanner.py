@@ -7,14 +7,16 @@ from elasticsearch import Elasticsearch
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 
 def scan(hostfile):
-    args = ' '.join(["./opt/ssllabs-scan/ssllabs-scan --ignore-mismatch=true --hostfile=%s " % hostfile])
+    args = ' '.join(["/opt/ssllabs-scan/ssllabs-scan --ignore-mismatch=true --hostfile=%s " % hostfile])
     ans = subprocess.Popen(args, shell=True, stdout=subprocess.PIPE)
     ans.poll()
     data = ans.communicate()
+    logger.debug(data)
     results = json.loads(data[0].decode('utf-8'))
     return results
 
