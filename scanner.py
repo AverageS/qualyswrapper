@@ -23,6 +23,7 @@ def scan(hostfile):
 
 def parse_and_send(results):
     for result in results:
+        logger.debug(result)
         if result['status'] == 'ERROR':
             return result
         try:
