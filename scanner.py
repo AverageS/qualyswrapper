@@ -49,7 +49,7 @@ def parse_and_send(results):
             result['dateFirstAdded'] = t['_source']['dateFirstAdded']
         finally:
             result['latestRefresh'] = current_time
-            es.index(index='ssl-scan', doc_type='typo', id=res_id, )
+            es.index(index='ssl-scan', doc_type='typo', id=res_id, body=result )
 
 if __name__ == '__main__':
     while True:
