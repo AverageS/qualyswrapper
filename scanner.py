@@ -42,16 +42,8 @@ def parse_and_send(results):
         except:
             logger.error('some keys havent been found [%s]' % str(result['host']))
         current_time = int(round(time.time() * 1000))
-        res_id = result['host'].replace('.', '').replace('/', '')
-        try:
-            t = es.get(index='hosts', doc_type='typo', id=res_id)
-        except:
-            result['dateFirstAdded'] = current_time
-        else:
-            result['dateFirstAdded'] = t['_source']['dateFirstAdded']
-        finally:
-            result['latestRefresh'] = current_time
-            es.index(index='ssl-scan', doc_type='typo', id=res_id, body=result )
+        result['latestRefresh'] = current_time
+        es.index(index='ssl-scan', doc_type='typo', body=result )
 
 if __name__ == '__main__':
     while True:
