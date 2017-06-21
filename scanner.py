@@ -8,7 +8,7 @@ from elasticsearch import Elasticsearch
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 es = Elasticsearch([{'host': '192.168.227.164', 'port': 9200}])
 
 opts, args = getopt.getopt(sys.argv[1:],"",["hostfile="])
