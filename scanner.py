@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-es = Elasticsearch([{'host': '192.168.227.164', 'port': 9200}])
+es = Elasticsearch([{'host': 'elasticsearch', 'port': 9200}])
 
 opts, args = getopt.getopt(sys.argv[1:],"",["hostfile="])
 opts_dict = dict(opts)
